@@ -10,9 +10,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PdfResponseDto {
+public class ResumePdfResponseDto {
 
-    private String name;
-
-    private byte[] data;
+    private byte[] bytes;
 }

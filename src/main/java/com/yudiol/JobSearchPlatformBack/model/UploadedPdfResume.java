@@ -12,23 +12,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "resumes")
+@Table(name = "uploaded_resume")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PdfResume {
+public class UploadedPdfResume {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "user_id")
-    private long userId;
+    private String userId;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "data")
-    private byte[] data;
+    @Column(name = "bytes")
+    private byte[] bytes;
 }
