@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-14-create_table_resume_by_template.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-14-create_table_uploaded_resume.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-15-create_table_advices.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-15-add_data_table_advices.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-15-create_table_responses.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-15-create_table_statistics.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-15-add_data_table_responses.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-15-add_data_table_statistics.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-17-create_table_user_links.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-17-add_data_table_user_links.sql
