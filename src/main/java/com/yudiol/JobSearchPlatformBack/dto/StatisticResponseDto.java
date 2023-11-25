@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StatisticResponseDto {
-    private List<QuantityInterview> listInterview;
+    private List<QuantityResponses> listResponses;
     private Long total;
     private Long percentageOfHrInterview;
     private Long percentageOfTests;

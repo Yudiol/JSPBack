@@ -2,7 +2,8 @@ package com.yudiol.JobSearchPlatformBack.controller;
 
 import com.yudiol.JobSearchPlatformBack.dto.ResumeBytesRequestDto;
 import com.yudiol.JobSearchPlatformBack.dto.ResumePdfResponseDto;
-import com.yudiol.JobSearchPlatformBack.service.PdfResumeService;
+import com.yudiol.JobSearchPlatformBack.service.UploadedPdfResumeService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,26 +23,31 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @ResponseStatus(HttpStatus.OK)
 @RequestMapping("/pdf")
-public class PdfResumeController {
-    private final PdfResumeService pdfResumeService;
+public class UploadedPdfResumeController {
+    private final UploadedPdfResumeService uploadedPdfResumeService;
+
 
     @GetMapping("/uploaded/{userId}")
+    @Operation(summary = "Получить резюме которое загрузил пользователь по userId")
     public ResumePdfResponseDto getUploadedResume(@PathVariable("userId") String userId) {
-        return pdfResumeService.findByUserId(userId);
+        return uploadedPdfResumeService.findByUserId(userId);
     }
 
     @PostMapping("/uploadedPdf/{userId}")
+    @Operation(summary = "Сохранить резюме(PDF) которое загрузил ( передача PDF ) пользователь по userId")
     public void savePdfResume(@PathVariable("userId") String userId, @RequestParam("file") MultipartFile file) throws IOException {
-        pdfResumeService.savePdf(userId, file);
+        uploadedPdfResumeService.savePdf(userId, file);
     }
 
     @PostMapping("/uploadedBytes/{userId}")
+    @Operation(summary = "Сохранить резюме(PDF) которое загрузил ( передача bytes ) пользователь по userId")
     public void saveBytesResume(@PathVariable("userId") String userId, @RequestBody ResumeBytesRequestDto requestDto) {
-        pdfResumeService.saveBytes(userId, requestDto.getBytes());
+        uploadedPdfResumeService.saveBytes(userId, requestDto.getBytes());
     }
 
-    @DeleteMapping("/deleteUploaded/{userId}")
+    @DeleteMapping("/uploaded/{userId}")
+    @Operation(summary = "Удалить резюме(PDF) которое пользователь по userId")
     public void deleteUploadedResume(@PathVariable("userId") String userId) {
-        pdfResumeService.deleteByUserId(userId);
+        uploadedPdfResumeService.deleteByUserId(userId);
     }
 }

@@ -4,6 +4,7 @@ import com.yudiol.JobSearchPlatformBack.dto.AdviceResponseDto;
 import com.yudiol.JobSearchPlatformBack.dto.MainResponseDto;
 import com.yudiol.JobSearchPlatformBack.service.AdviceService;
 import com.yudiol.JobSearchPlatformBack.service.MainService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ public class MainController {
     private final AdviceService adviceService;
 
     @GetMapping("/{id}")
+    @Operation(summary = "Получить данные для главной (main) страницы, статистика и ссылки")
     public MainResponseDto index(@PathVariable("id") String id) throws SQLException {
         Integer month = LocalDate.now().getMonthValue();
         Integer year = LocalDate.now().getYear();
@@ -32,6 +34,7 @@ public class MainController {
     }
 
     @GetMapping("/advice/{id}")
+    @Operation(summary = "Главная страница получить совет")
     public AdviceResponseDto getAdvice(@PathVariable("id") Long id) {
         return adviceService.getAdvice(id);
     }

@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  client-backend:
+    build: .
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mongo-db
+      - db-jsp-resource
+    environment:
+      - spring.data.mongodb.host=mongo-db:27017
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-jsp-resource:5432/JobSearchPlatformResourceDB
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+  mongo-db:
+    image: mongo:4.4.25-focal
+    #    environment:
+    #      - MONGO_INITDB_ROOT_USERNAME=user
+    #      - MONGO_INITDB_ROOT_PASSWORD=password
+    #      - MONGO_INITDB_DATABASE=advices
+    ports:
+      - "27017:27017"
+
+
+  db-jsp-resource:
+    image: postgres:14-alpine
+    container_name: db-jsp-resource
+    ports:
+      - "6543:5432"
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=JobSearchPlatformResourceDB
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Institution {
     private String name;
-    private String direction;
+    private String position;
     private LocalDate startDate;
     private LocalDate endDate;
     private String description;
