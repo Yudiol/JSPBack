@@ -1,7 +1,7 @@
 package com.yudiol.JobSearchPlatformBack.service.Impl;
 
 import com.yudiol.JobSearchPlatformBack.dto.ResumePdfResponseDto;
-import com.yudiol.JobSearchPlatformBack.mapper.ResumeMapper;
+import com.yudiol.JobSearchPlatformBack.mapper.Mapper;
 import com.yudiol.JobSearchPlatformBack.model.UploadedPdfResume;
 import com.yudiol.JobSearchPlatformBack.repository.PdfResumeRepository;
 import com.yudiol.JobSearchPlatformBack.service.UploadedPdfResumeService;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UploadedPdfResumeServiceImpl implements UploadedPdfResumeService {
     private final PdfResumeRepository pdfResumeRepository;
-    private final ResumeMapper resumeMapper;
+    private final Mapper resumeMapper;
 
     public ResumePdfResponseDto findByUserId(String userId) {
         UploadedPdfResume pdfResume = pdfResumeRepository.findByUserId(userId).orElse(null);

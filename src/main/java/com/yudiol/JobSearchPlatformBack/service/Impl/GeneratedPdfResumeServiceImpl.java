@@ -33,8 +33,8 @@ public class GeneratedPdfResumeServiceImpl implements GeneratedPdfResumeService 
             Path pdfPath = Paths.get(path);
             pdf = Files.readAllBytes(pdfPath);
             Thread.sleep(100);
-//            File myFile = new File(path);
-//            myFile.delete();
+            File myFile = new File(path);
+            myFile.delete();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

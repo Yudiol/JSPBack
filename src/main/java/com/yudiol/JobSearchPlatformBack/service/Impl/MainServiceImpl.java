@@ -4,8 +4,8 @@ import com.yudiol.JobSearchPlatformBack.dto.LinkDto;
 import com.yudiol.JobSearchPlatformBack.dto.MainResponseDto;
 import com.yudiol.JobSearchPlatformBack.dto.QuantityResponses;
 import com.yudiol.JobSearchPlatformBack.dto.StatisticResponseDto;
-import com.yudiol.JobSearchPlatformBack.mapper.ResumeMapper;
-import com.yudiol.JobSearchPlatformBack.repository.ResponseRepository;
+import com.yudiol.JobSearchPlatformBack.mapper.Mapper;
+import com.yudiol.JobSearchPlatformBack.repository.ResponseTableRepository;
 import com.yudiol.JobSearchPlatformBack.repository.StatisticRepository;
 import com.yudiol.JobSearchPlatformBack.repository.UserLinkRepository;
 import com.yudiol.JobSearchPlatformBack.service.MainService;
@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 public class MainServiceImpl implements MainService {
     private final UserLinkRepository userLinkRepository;
     private final StatisticRepository statisticRepository;
-    private final ResponseRepository responseRepository;
-    private final ResumeMapper resumeMapper;
+    private final ResponseTableRepository responseTableRepository;
+    private final Mapper mapper;
 
 
     public MainResponseDto getMainResponseDto(String id, Integer month, Integer year) throws SQLException {
@@ -55,19 +55,21 @@ public class MainServiceImpl implements MainService {
     }
 
     private Long findTotalQuantityByUserId(String id, Integer month, Integer year) {
-        return responseRepository.findTotalQuantityByUserId(id, month, year);
+        return responseTableRepository.findTotalQuantityByUserId(id, month, year);
     }
 
     private List<LinkDto> findAllLinksByUserId(String id) {
         return userLinkRepository.findAllByUserId(id)
                 .map(link -> link.stream()
-                        .map(resumeMapper::toLinkDto)
+                        .map(mapper::toLinkDto)
                         .collect(Collectors.toList()))
                 .orElse(null);
     }
 
     private List<QuantityResponses> findQuantityResponses(String id, Integer month, Integer year) {
-        return responseRepository.findAllByMonthAndYear(id, month, year);
+        System.out.println(id + " " + month + " " +year);
+        responseTableRepository.findAllByMonthAndYear(id, month, year).stream().forEach(System.out::println);
+        return responseTableRepository.findAllByMonthAndYear(id, month, year);
     }
 
     private StatisticResponseDto createStatisticResponseDto(String id, Integer month, Integer year) {

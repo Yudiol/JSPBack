@@ -4,6 +4,7 @@ import com.yudiol.JobSearchPlatformBack.dto.ResumeBytesRequestDto;
 import com.yudiol.JobSearchPlatformBack.dto.ResumePdfResponseDto;
 import com.yudiol.JobSearchPlatformBack.service.UploadedPdfResumeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,26 +29,26 @@ public class UploadedPdfResumeController {
 
 
     @GetMapping("/uploaded/{userId}")
-    @Operation(summary = "Получить резюме которое загрузил пользователь по userId")
-    public ResumePdfResponseDto getUploadedResume(@PathVariable("userId") String userId) {
+    @Operation(summary = "Получить резюме которое загрузил пользователь по userId ( массив байт )")
+    public ResumePdfResponseDto getUploadedResume(@PathVariable("userId") @Parameter(description = "Идентификатор пользователя") String userId) {
         return uploadedPdfResumeService.findByUserId(userId);
     }
 
     @PostMapping("/uploadedPdf/{userId}")
-    @Operation(summary = "Сохранить резюме(PDF) которое загрузил ( передача PDF ) пользователь по userId")
-    public void savePdfResume(@PathVariable("userId") String userId, @RequestParam("file") MultipartFile file) throws IOException {
+    @Operation(summary = "Сохранить резюме которое загрузил пользователь по userId ( PDF передача form-data )")
+    public void savePdfResume(@PathVariable("userId") @Parameter(description = "Идентификатор пользователя") String userId, @RequestParam("file") MultipartFile file) throws IOException {
         uploadedPdfResumeService.savePdf(userId, file);
     }
 
     @PostMapping("/uploadedBytes/{userId}")
-    @Operation(summary = "Сохранить резюме(PDF) которое загрузил ( передача bytes ) пользователь по userId")
-    public void saveBytesResume(@PathVariable("userId") String userId, @RequestBody ResumeBytesRequestDto requestDto) {
+    @Operation(summary = "Сохранить резюме которое загрузил пользователь по userId ( PDF передача bytes ) ")
+    public void saveBytesResume(@PathVariable("userId") @Parameter(description = "Идентификатор пользователя") String userId, @RequestBody ResumeBytesRequestDto requestDto) {
         uploadedPdfResumeService.saveBytes(userId, requestDto.getBytes());
     }
 
     @DeleteMapping("/uploaded/{userId}")
-    @Operation(summary = "Удалить резюме(PDF) которое пользователь по userId")
-    public void deleteUploadedResume(@PathVariable("userId") String userId) {
+    @Operation(summary = "Удалить резюме(PDF) которое пользователь загрузил по userId")
+    public void deleteUploadedResume(@PathVariable("userId") @Parameter(description = "Идентификатор пользователя") String userId) {
         uploadedPdfResumeService.deleteByUserId(userId);
     }
 }

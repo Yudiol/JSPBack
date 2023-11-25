@@ -3,6 +3,7 @@ package com.yudiol.JobSearchPlatformBack.controller;
 import com.yudiol.JobSearchPlatformBack.model.Resume;
 import com.yudiol.JobSearchPlatformBack.service.ResumeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,19 +25,19 @@ public class ResumeController {
 
     @PostMapping("/{userId}")
     @Operation(summary = "Сохранить резюме пользователя по userId")
-    public void save(@PathVariable("userId") String userId, @RequestBody Resume resume) {
+    public void save(@PathVariable("userId") @Parameter(description = "Идентификатор пользователя") String userId, @RequestBody Resume resume) {
         resumeService.save(userId, resume);
     }
 
     @GetMapping("/{userId}")
     @Operation(summary = "Получить резюме пользователя по userId")
-    public Resume getByUserId(@PathVariable("userId") String userId) {
+    public Resume getByUserId(@PathVariable("userId") @Parameter(description = "Идентификатор пользователя") String userId) {
         return resumeService.findByUserId(userId);
     }
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить резюме пользователя по userId")
-    public void deleteByUserId(@PathVariable("userId") String userId) {
+    public void deleteByUserId(@PathVariable("userId") @Parameter(description = "Идентификатор пользователя") String userId) {
         resumeService.deleteByUserId(userId);
     }
 

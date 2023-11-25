@@ -4,17 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class QuantityResponses {
-    private LocalDateTime date;
-    private Long count;
+public class ResponseTableRequestDto {
+    private String name;
+    private String link;
+    private String position;
+    private String contact;
+    private int status;
+    private String comments;
 }

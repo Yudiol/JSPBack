@@ -10,9 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "responses")
@@ -30,11 +29,13 @@ public class Response {
     private String userId;
 
     @Column(name = "response_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate responseDate;
+    private LocalDateTime responseDate;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "link")
+    private String link;
 
     @Column(name = "position")
     private String position;
