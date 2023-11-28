@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -15,6 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 public class QuantityResponses {
-    private LocalDateTime date;
+    private LocalDate date;
     private Long count;
 }

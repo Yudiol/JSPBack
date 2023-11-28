@@ -1,6 +1,7 @@
 package com.yudiol.JobSearchPlatformBack.service.Impl;
 
 import com.yudiol.JobSearchPlatformBack.dto.ResumeDto;
+import com.yudiol.JobSearchPlatformBack.exception.errors.NotFoundException;
 import com.yudiol.JobSearchPlatformBack.model.Resume;
 import com.yudiol.JobSearchPlatformBack.repository.ResumeRepository;
 import com.yudiol.JobSearchPlatformBack.service.ResumeService;
@@ -14,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ResumeServiceImpl implements ResumeService {
     private final ResumeRepository resumeRepository;
 
-    public Resume findByUserId(String id) {
-        return resumeRepository.findByUserId(id).getResume();
+    public Resume findByUserId(String userId) {
+        return resumeRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("Резюме", "/ user ID " + userId)).getResume();
     }
 
     @Transactional

@@ -31,6 +31,9 @@ public class Statistic {
     @Column(name = "user_id")
     private String userId;
 
+    @Column(name = "company_id")
+    private Long companyId;
+
     @Column(name = "hr_interview")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate hrInterview;
@@ -52,5 +55,6 @@ public class Statistic {
     private LocalDate managerInterview;
 
     @Column(name = "offer")
-    private Integer offer;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate offer;
 }

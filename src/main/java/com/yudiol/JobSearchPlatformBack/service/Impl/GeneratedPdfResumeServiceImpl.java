@@ -1,6 +1,7 @@
 package com.yudiol.JobSearchPlatformBack.service.Impl;
 
 import com.yudiol.JobSearchPlatformBack.dto.ResumePdfResponseDto;
+import com.yudiol.JobSearchPlatformBack.exception.errors.NotFoundException;
 import com.yudiol.JobSearchPlatformBack.model.Resume;
 import com.yudiol.JobSearchPlatformBack.repository.ResumeRepository;
 import com.yudiol.JobSearchPlatformBack.service.GeneratedPdfResumeService;
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +25,7 @@ public class GeneratedPdfResumeServiceImpl implements GeneratedPdfResumeService 
     private final ResumeRepository resumeRepository;
 
     public ResumePdfResponseDto createPdf(String userId) {
-        Resume resume = resumeRepository.findByUserId(userId).getResume();
+        Resume resume = resumeRepository.findByUserId(userId).stream().findFirst().orElseThrow(() -> new NotFoundException("PDF", "/ user ID " + userId)).getResume();
         byte[] pdf = null;
         try {
             String path = "resumes/resume-" + userId + ".pdf";

@@ -40,7 +40,7 @@ public class MainServiceImpl implements MainService {
 
 
     private Long calculatePercentage(Long total, Long quantity) {
-        if (total == null) {
+        if (total == null || total == 0) {
             return 0L;
         }
         return (quantity * 100) / total;
@@ -67,8 +67,6 @@ public class MainServiceImpl implements MainService {
     }
 
     private List<QuantityResponses> findQuantityResponses(String id, Integer month, Integer year) {
-        System.out.println(id + " " + month + " " +year);
-        responseTableRepository.findAllByMonthAndYear(id, month, year).stream().forEach(System.out::println);
         return responseTableRepository.findAllByMonthAndYear(id, month, year);
     }
 

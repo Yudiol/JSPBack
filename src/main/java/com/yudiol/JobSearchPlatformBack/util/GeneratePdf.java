@@ -28,14 +28,15 @@ public class GeneratePdf implements GeneratePdfService {
     private float START_X = 20f;
     private PDRectangle mediaBox;
     private static char c = '\u2022';
-    private PDDocument document = new PDDocument();
+    private PDDocument document;
+    private PDPage pdPage;
     private PDPageContentStream contentStream;
-    private final File file = new File("arial.ttf");
+    private final File file = new File("font/arial.ttf");
     private PDFont FONT;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/yy");
 
     public void downloadPdf(Resume resume, String userId) throws IOException {
-
+        document = new PDDocument();
         String name = resume.getContact().getName() + " " + resume.getContact().getSurname();
         String secondLine = resume.getContact().getEmail() + " | " + resume.getContact().getPhone() + " | " + resume.getContact().getLinkedin() + " | " + resume.getContact().getCountry();
         String summary = resume.getSummary().getSummary();
@@ -98,7 +99,7 @@ public class GeneratePdf implements GeneratePdfService {
         if (contentStream != null) {
             contentStream.close();
         }
-        PDPage pdPage = new PDPage();
+        pdPage = new PDPage();
         document.addPage(pdPage);
         contentStream = new PDPageContentStream(document, pdPage);
         mediaBox = pdPage.getMediaBox();

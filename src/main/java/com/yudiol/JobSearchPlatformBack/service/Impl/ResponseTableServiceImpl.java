@@ -7,12 +7,13 @@ import com.yudiol.JobSearchPlatformBack.mapper.Mapper;
 import com.yudiol.JobSearchPlatformBack.model.Response;
 import com.yudiol.JobSearchPlatformBack.repository.ResponseTableRepository;
 import com.yudiol.JobSearchPlatformBack.service.ResponseTableService;
+import com.yudiol.JobSearchPlatformBack.service.StatisticsService;
 import com.yudiol.JobSearchPlatformBack.util.ResponseDateComparator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,13 +24,15 @@ public class ResponseTableServiceImpl implements ResponseTableService {
 
     private final Mapper mapper;
     private final ResponseTableRepository repository;
+    private final StatisticsService statisticsService;
 
     @Transactional
     public void save(String userId, ResponseTableRequestDto responseTableRequestDto) {
         Response response = mapper.toResponse(responseTableRequestDto);
-        response.setResponseDate(LocalDateTime.now());
+        response.setResponseDate(LocalDate.now());
         response.setUserId(userId);
-        repository.save(response);
+        Long responseId = repository.save(response).getId();
+        statisticsService.save(userId, responseId, response.getStatus());
     }
 
     public ResponseTableListResponseDto findAll(String userId) {
@@ -51,7 +54,7 @@ public class ResponseTableServiceImpl implements ResponseTableService {
     @Transactional
     public void update(String userId, ResponseTableResponseDto responseTableResponseDto) {
         Response r = mapper.toResponse(responseTableResponseDto);
-
         repository.update(userId, r.getId(), r.getName(), r.getLink(), r.getPosition(), r.getContact(), r.getStatus(), r.getComments());
+        statisticsService.update(r.getId(), userId, r.getStatus());
     }
 }

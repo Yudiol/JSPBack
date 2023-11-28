@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "responses")
@@ -29,7 +29,7 @@ public class Response {
     private String userId;
 
     @Column(name = "response_date")
-    private LocalDateTime responseDate;
+    private LocalDate responseDate;
 
     @Column(name = "name")
     private String name;

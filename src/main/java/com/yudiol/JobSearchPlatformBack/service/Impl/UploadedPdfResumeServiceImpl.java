@@ -1,6 +1,7 @@
 package com.yudiol.JobSearchPlatformBack.service.Impl;
 
 import com.yudiol.JobSearchPlatformBack.dto.ResumePdfResponseDto;
+import com.yudiol.JobSearchPlatformBack.exception.errors.NotFoundException;
 import com.yudiol.JobSearchPlatformBack.mapper.Mapper;
 import com.yudiol.JobSearchPlatformBack.model.UploadedPdfResume;
 import com.yudiol.JobSearchPlatformBack.repository.PdfResumeRepository;
@@ -21,7 +22,7 @@ public class UploadedPdfResumeServiceImpl implements UploadedPdfResumeService {
     private final Mapper resumeMapper;
 
     public ResumePdfResponseDto findByUserId(String userId) {
-        UploadedPdfResume pdfResume = pdfResumeRepository.findByUserId(userId).orElse(null);
+        UploadedPdfResume pdfResume = pdfResumeRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("PDF", "/ user ID " + userId));
         return resumeMapper.toPdfResumeDto(pdfResume);
     }
 
