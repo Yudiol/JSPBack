@@ -19,3 +19,11 @@ databaseChangeLog:
       file: db/changelog/v.1.0.0/2023-11-17-create_table_user_links.sql
   - include:
       file: db/changelog/v.1.0.0/2023-11-17-add_data_table_user_links.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-25-change_table_response.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-26-change_table_response.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-26-change_table_statistics.sql
+  - include:
+      file: db/changelog/v.1.0.0/2023-11-27-change_table_response.sql

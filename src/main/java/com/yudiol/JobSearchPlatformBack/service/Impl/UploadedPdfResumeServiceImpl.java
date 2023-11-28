@@ -1,10 +1,11 @@
 package com.yudiol.JobSearchPlatformBack.service.Impl;
 
 import com.yudiol.JobSearchPlatformBack.dto.ResumePdfResponseDto;
-import com.yudiol.JobSearchPlatformBack.mapper.ResumeMapper;
+import com.yudiol.JobSearchPlatformBack.exception.errors.NotFoundException;
+import com.yudiol.JobSearchPlatformBack.mapper.Mapper;
 import com.yudiol.JobSearchPlatformBack.model.UploadedPdfResume;
 import com.yudiol.JobSearchPlatformBack.repository.PdfResumeRepository;
-import com.yudiol.JobSearchPlatformBack.service.PdfResumeService;
+import com.yudiol.JobSearchPlatformBack.service.UploadedPdfResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +17,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PdfResumeServiceImpl implements PdfResumeService {
+public class UploadedPdfResumeServiceImpl implements UploadedPdfResumeService {
     private final PdfResumeRepository pdfResumeRepository;
-    private final ResumeMapper resumeMapper;
+    private final Mapper resumeMapper;
 
     public ResumePdfResponseDto findByUserId(String userId) {
-        UploadedPdfResume pdfResume = pdfResumeRepository.findByUserId(userId).orElse(null);
+        UploadedPdfResume pdfResume = pdfResumeRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("PDF", "/ user ID " + userId));
         return resumeMapper.toPdfResumeDto(pdfResume);
     }
 
@@ -37,7 +38,6 @@ public class PdfResumeServiceImpl implements PdfResumeService {
 
     @Transactional
     public void deleteByUserId(String userId) {
-        System.out.println(userId);
         pdfResumeRepository.deleteByUserId(userId);
     }
 
@@ -48,6 +48,7 @@ public class PdfResumeServiceImpl implements PdfResumeService {
         return resume;
     }
 
+    @Transactional
     private void saveOrReplaceResumeIfExists(String userId, byte[] bytes) {
         Optional<UploadedPdfResume> optional = pdfResumeRepository.findByUserId(userId);
         UploadedPdfResume resume;

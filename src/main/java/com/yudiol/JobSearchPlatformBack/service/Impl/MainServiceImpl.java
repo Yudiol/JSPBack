@@ -1,10 +1,11 @@
 package com.yudiol.JobSearchPlatformBack.service.Impl;
 
+import com.yudiol.JobSearchPlatformBack.dto.LinkDto;
 import com.yudiol.JobSearchPlatformBack.dto.MainResponseDto;
-import com.yudiol.JobSearchPlatformBack.dto.QuantityInterview;
+import com.yudiol.JobSearchPlatformBack.dto.QuantityResponses;
 import com.yudiol.JobSearchPlatformBack.dto.StatisticResponseDto;
-import com.yudiol.JobSearchPlatformBack.model.Link;
-import com.yudiol.JobSearchPlatformBack.repository.ResponseRepository;
+import com.yudiol.JobSearchPlatformBack.mapper.Mapper;
+import com.yudiol.JobSearchPlatformBack.repository.ResponseTableRepository;
 import com.yudiol.JobSearchPlatformBack.repository.StatisticRepository;
 import com.yudiol.JobSearchPlatformBack.repository.UserLinkRepository;
 import com.yudiol.JobSearchPlatformBack.service.MainService;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +23,13 @@ import java.util.List;
 public class MainServiceImpl implements MainService {
     private final UserLinkRepository userLinkRepository;
     private final StatisticRepository statisticRepository;
-    private final ResponseRepository responseRepository;
+    private final ResponseTableRepository responseTableRepository;
+    private final Mapper mapper;
 
 
     public MainResponseDto getMainResponseDto(String id, Integer month, Integer year) throws SQLException {
 
-        List<Link> userLinks = findAllLinksByUserId(id);
+        List<LinkDto> userLinks = findAllLinksByUserId(id);
         StatisticResponseDto statisticResponseDto = createStatisticResponseDto(id, month, year);
 
         MainResponseDto mainResponseDto = new MainResponseDto();
@@ -37,7 +40,7 @@ public class MainServiceImpl implements MainService {
 
 
     private Long calculatePercentage(Long total, Long quantity) {
-        if (total == null) {
+        if (total == null || total == 0) {
             return 0L;
         }
         return (quantity * 100) / total;
@@ -47,24 +50,33 @@ public class MainServiceImpl implements MainService {
         return statisticRepository.findTotalQuantityTestByUserId(id, month, year);
     }
 
+    private Long findTotalQuantityHrInterviewByUserId(String id, Integer month, Integer year) {
+        return statisticRepository.findTotalQuantityHrInterviewByUserId(id, month, year);
+    }
+
     private Long findTotalQuantityByUserId(String id, Integer month, Integer year) {
-        return responseRepository.findTotalQuantityByUserId(id, month, year);
+        return responseTableRepository.findTotalQuantityByUserId(id, month, year);
     }
 
-    private List<Link> findAllLinksByUserId(String id) {
-        return userLinkRepository.findAllByUserId(id).orElse(null);
+    private List<LinkDto> findAllLinksByUserId(String id) {
+        return userLinkRepository.findAllByUserId(id)
+                .map(link -> link.stream()
+                        .map(mapper::toLinkDto)
+                        .collect(Collectors.toList()))
+                .orElse(null);
     }
 
-
-    private List<QuantityInterview> findQuantityHrInterview(String id, Integer month, Integer year) {
-        return statisticRepository.findAllByMonthAndYear(id, month, year);
+    private List<QuantityResponses> findQuantityResponses(String id, Integer month, Integer year) {
+        return responseTableRepository.findAllByMonthAndYear(id, month, year);
     }
 
     private StatisticResponseDto createStatisticResponseDto(String id, Integer month, Integer year) {
 
-        List<QuantityInterview> listHrInterviews = findQuantityHrInterview(id, month, year);
+        List<QuantityResponses> listResponses = findQuantityResponses(id, month, year);
 
-        Long quantityHrInterview = listHrInterviews.stream().map(QuantityInterview::getCount).reduce(Long::sum).orElse(null);
+
+        Long quantityHrInterview = findTotalQuantityHrInterviewByUserId(id, month, year);
+
         Long quantityTests = findTotalQuantityTestByUserId(id, month, year);
 
         Long total = findTotalQuantityByUserId(id, month, year);
@@ -73,7 +85,7 @@ public class MainServiceImpl implements MainService {
         Long percentHrInterview = calculatePercentage(total, quantityHrInterview);
 
         StatisticResponseDto statisticResponseDto = new StatisticResponseDto();
-        statisticResponseDto.setListInterview(listHrInterviews);
+        statisticResponseDto.setListResponses(listResponses);
         statisticResponseDto.setPercentageOfHrInterview(percentHrInterview);
         statisticResponseDto.setPercentageOfTests(percentTest);
         statisticResponseDto.setTotal(total);

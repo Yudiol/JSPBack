@@ -1,20 +1,26 @@
-package com.yudiol.JobSearchPlatformBack.model;
+package com.yudiol.JobSearchPlatformBack.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Institution {
+public class ResponseTableResponseDto {
+    private long id;
+
     private String name;
+
+    private String link;
+
     private String position;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private String description;
+
+    private String contact;
+
+    private int status;
+
+    private String comments;
 }

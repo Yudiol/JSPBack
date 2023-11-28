@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MainResponseDto {
-
-    private List<LinkDto> links;
-    private StatisticResponseDto statistics;
+public class ResponseTableRequestDto {
+    private String name;
+    private String link;
+    private String position;
+    private String contact;
+    private int status;
+    private String comments;
 }

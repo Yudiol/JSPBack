@@ -7,12 +7,10 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MainResponseDto {
-
-    private List<LinkDto> links;
-    private StatisticResponseDto statistics;
+public class ResponseTableListResponseDto {
+    private List<ResponseTableResponseDto> responses;
 }

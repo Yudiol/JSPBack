@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-public interface PdfResumeService {
+public interface UploadedPdfResumeService {
     ResumePdfResponseDto findByUserId(String userId);
 
     void savePdf(String userId, MultipartFile file) throws IOException;
